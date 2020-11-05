@@ -26,6 +26,10 @@
                 font-family: 'Noto Serif KR', serif;
             }
 
+            .body-layout {
+
+            }
+
             #head-image {
                 display: block;
                 margin-left: auto;
@@ -33,6 +37,7 @@
                 width: 85%;
                 height: 500px;
                 padding-bottom: 20px;
+                position: relative;
             }
 
             #head-title {
@@ -44,6 +49,7 @@
                 top: 20%;
                 left: 50%;
                 transform: translate(-50%);
+                padding-bottom: 50px;
             }
 
             .button {
@@ -71,6 +77,8 @@
                 left: 50%;
                 transform: translate(-50%);
                 font-size: 13px;
+
+
             }
 
             .button:hover {
@@ -130,10 +138,10 @@
                 transform: scaleY(0);
             }
 
-            #post-box {
+            #input-box {
                 width: 750px;
-                margin: 20px auto;
-                padding: 50px;
+                margin: 40px auto;
+                padding: 20px;
                 background-color: #152827;
                 position: relative;
                 border-style: solid;
@@ -144,51 +152,73 @@
             .form-label {
                 color: white;
             }
+
+            .post-img {
+                width: 300px;
+                height: 200px;
+            }
+
+            .post-youtube {
+                width: 300px;
+                height: 200px;
+            }
+
+            .card-columns {
+                width: 320px;
+                padding: 10px;
+                margin-left: inherit;
+            }
+
+            .card-body {
+                width: 300px;
+                background-color: whitesmoke;
+            }
+
         </style>
 
         <script>
             function openClose() {
                 // id 값 post-box의 display 값이 block 이면(= 눈에 보이면)
-                if ($("#post-box").css("display") == "block") {
+                if ($("#input-box").css("display") == "block") {
                     // post-box를 가리고
-                    $("#post-box").hide();
+                    $("#input-box").hide();
                     // 다시 버튼을 클릭하면, 박스 열기를 할 수 있게 텍스트 바꿔두기
-                    $("#btn-post-box").text("Edit your Playlist");
+                    $("#btn-input-box").text("Edit your Playlist");
                 } else {
                     // 아니면(눈에 보이지 않으면) post-box를 펴라
-                    $("#post-box").show();
+                    $("#input-box").show();
                     // 다시 버튼을 클릭하면, 박스 닫기를 할 수 있게 텍스트 바꿔두기
-                    $("#btn-post-box").text("Done Editing");
+                    $("#btn-input-box").text("Done Editing");
                 }
             }
         </script>
     </head>
 
-    <body style="background-color:#9BBFC1;">
+    <body class="body-layout" style="background-color:#9BBFC1;">
         <div class="wrap">
             <div class="header">
                 <img id=head-image
                      src="https://images.unsplash.com/photo-1587731556938-38755b4803a6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1514&q=80"
                      alt="Responsive image">
                 <p id="head-title"> Replay your Photos </p>
-                <button onclick="openClose()" id="btn-post-box" type="button" class="button">
+                <button onclick="openClose()" id="btn-input-box" type="button" class="button">
                     Edit your Playlist
                     <div class="button__horizontal"></div>
                     <div class="button__vertical"></div>
                 </button>
-                <div id="post-box" class="form-post" style="display:none">
+                <div id="input-box" class="form-input" style="display:none">
                     <div>
                         <div class="form-group">
                             <label class="form-label" for="img-url">Image Link Upload</label>
-                            <input id="img-url" class="form-control" placeholder="">
+                            <input id="img-url" class="form-control" placeholder="그 날의 이미지를 올려주세요">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="youtube-url">Youtube Link Upload</label>
-                            <input id="youtube-url" class="form-control" placeholder="">
+                            <input id="youtube-url" class="form-control" placeholder="그 날의 노래를 올려주세요">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="date">Date</label>
-                            <input id="date" class="form-control" placeholder="">
+                            <input id="date" class="form-control" placeholder="ex) 2020/10/31">
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="post-memo">Memo</label>
@@ -196,11 +226,27 @@
                         </div>
                         <button type="button" class="button" onclick="postMemory()">Add to your Playlist</button>
                     </div>
-
                 </div>
 
-
+                <div id="memory-post" class="card-columns">
+                    <div class="card">
+                        <img class="post-img"
+                             src="https://images.unsplash.com/photo-1592025977521-83fbbd1252c1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1651&q=80"
+                             alt="Post Image cap">
+                        <iframe class="post-youtube"
+                                src="https://www.youtube.com/embed?v=YBEUXfT7_48&ab_channel=StoneMusicEntertainment=0"
+                                alt="Post Youtube cap">
+                        </iframe>
+                        <div class="card-body">
+                            <a href="#" class="card-title">여기 기사 제목이 들어가죠</a>
+                            <p class="card-text">벚꽃으로 보러갔다가 거기서 먹었던 핫도그가 생각나서 끄적이는 메모리. </p>
+                            <p class="card-text comment">여기에 코멘트가 들어갑니다.</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
+
+
     </body>
 </html>
