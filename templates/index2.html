@@ -26,10 +26,6 @@
                 font-family: 'Noto Serif KR', serif;
             }
 
-            .body-layout {
-
-            }
-
             #head-image {
                 display: block;
                 margin-left: auto;
@@ -73,69 +69,16 @@
                 box-shadow: inset 0 0 0 var(--border-size) currentcolor;
                 -webkit-transition: background .8s ease;
                 transition: background .8s ease;
-                top: 350px;
                 left: 50%;
                 transform: translate(-50%);
                 font-size: 13px;
-
-
             }
 
+            #btn-input-box {
+                top: 390px;
+            }
             .button:hover {
                 background: rgba(100, 0, 0, 0.03);
-            }
-
-            .button__horizontal, .button__vertical {
-                position: absolute;
-                top: var(--horizontal-offset, 0);
-                right: var(--vertical-offset, 0);
-                bottom: var(--horizontal-offset, 0);
-                left: var(--vertical-offset, 0);
-                -webkit-transition: -webkit-transform .8s ease;
-                transition: -webkit-transform .8s ease;
-                will-change: transform;
-            }
-
-            .button__horizontal::before, .button__vertical::before {
-                content: '';
-                position: absolute;
-                border: inherit;
-            }
-
-            .button__horizontal {
-                --vertical-offset: calc(var(--offset) * -1);
-                border-top: var(--border-size) solid currentcolor;
-                border-bottom: var(--border-size) solid currentcolor;
-            }
-
-            .button__horizontal::before {
-                top: calc(var(--vertical-offset) - var(--border-size));
-                bottom: calc(var(--vertical-offset) - var(--border-size));
-                left: calc(var(--vertical-offset) * -1);
-                right: calc(var(--vertical-offset) * -1);
-            }
-
-            .button:hover .button__horizontal {
-                -webkit-transform: scaleX(0);
-                transform: scaleX(0);
-            }
-
-            .button__vertical {
-                --horizontal-offset: calc(var(--offset) * -1);
-                border-left: var(--border-size) solid currentcolor;
-                border-right: var(--border-size) solid currentcolor;
-            }
-
-            .button__vertical::before {
-                top: calc(var(--horizontal-offset) * -1);
-                bottom: calc(var(--horizontal-offset) * -1);
-                left: calc(var(--horizontal-offset) - var(--border-size));
-                right: calc(var(--horizontal-offset) - var(--border-size));
-            }
-
-            .button:hover .button__vertical {
-                -webkit-transform: scaleY(0);
-                transform: scaleY(0);
             }
 
             #input-box {
@@ -147,6 +90,8 @@
                 border-style: solid;
                 border-width: 2px;
                 border-color: white;
+                height: auto;
+                padding-bottom: 60px;
             }
 
             .form-label {
@@ -174,6 +119,15 @@
                 background-color: whitesmoke;
             }
 
+            .card {
+                width: 3000px;
+                border: aliceblue solid 2px;
+                background-color: aliceblue;
+                display: block;
+                margin-left: 100px;
+                position: relative;
+            }
+
         </style>
 
         <script>
@@ -190,6 +144,24 @@
                     // 다시 버튼을 클릭하면, 박스 닫기를 할 수 있게 텍스트 바꿔두기
                     $("#btn-input-box").text("Done Editing");
                 }
+            }
+
+            function postArticle() {
+                //아이작스 전에 요청하기 전에 뭘 해야하냐면요 세줄동안 그 박스안에 들어오는 내용물을 서버로 보낼수잇게 그 박스의 ID를 찾으세
+                let urlInfo = $("#post-url").val()
+                let commentInfo = $("#post-comment").val()
+
+                $.ajax({
+                    type: "POST",
+                    url: "/memo",
+                    data: {"url_give": urlInfo, "comment_give": commentInfo},
+                    success: function (response) { // 성공하면
+                        if (response["result"] == "success") {
+                            alert(response["msg"]);
+                            window.location.reload()
+                        }
+                    }
+                })
             }
         </script>
     </head>
@@ -224,7 +196,9 @@
                             <label class="form-label" for="post-memo">Memo</label>
                             <textarea id="post-memo" class="form-control" rows="2"></textarea>
                         </div>
+
                         <button type="button" class="button" onclick="postMemory()">Add to your Playlist</button>
+
                     </div>
                 </div>
 
@@ -234,7 +208,7 @@
                              src="https://images.unsplash.com/photo-1592025977521-83fbbd1252c1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1651&q=80"
                              alt="Post Image cap">
                         <iframe class="post-youtube"
-                                src="https://www.youtube.com/embed?v=YBEUXfT7_48&ab_channel=StoneMusicEntertainment=0"
+                                src="https://www.youtube.com/embed?v=nFV-Jg5mw2E&ab_channel=%EB%A0%88%EB%AA%AC%EC%93%B0"
                                 alt="Post Youtube cap">
                         </iframe>
                         <div class="card-body">
