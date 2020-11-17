@@ -77,6 +77,7 @@
             #btn-input-box {
                 top: 390px;
             }
+
             .button:hover {
                 background: rgba(100, 0, 0, 0.03);
             }
@@ -98,6 +99,7 @@
                 color: white;
             }
 
+
             .post-img {
                 width: 300px;
                 height: 200px;
@@ -108,11 +110,6 @@
                 height: 200px;
             }
 
-            .card-columns {
-                width: 320px;
-                padding: 10px;
-                margin-left: inherit;
-            }
 
             .card-body {
                 width: 300px;
@@ -120,17 +117,18 @@
             }
 
             .card {
-                width: 3000px;
-                border: aliceblue solid 2px;
-                background-color: aliceblue;
-                display: block;
                 margin-left: 100px;
-                position: relative;
+                width: 300px;
             }
 
         </style>
 
         <script>
+            $(document).ready(function () {
+                $("#cards-box").html("");
+                showMemory();
+            });
+
             function openClose() {
                 // id 값 post-box의 display 값이 block 이면(= 눈에 보이면)
                 if ($("#input-box").css("display") == "block") {
@@ -146,25 +144,87 @@
                 }
             }
 
-            function postArticle() {
+
+            function postMemory() {
+
                 //아이작스 전에 요청하기 전에 뭘 해야하냐면요 세줄동안 그 박스안에 들어오는 내용물을 서버로 보낼수잇게 그 박스의 ID를 찾으세
-                let urlInfo = $("#post-url").val()
-                let commentInfo = $("#post-comment").val()
+                let img = $("#img-url").val()
+                let youtube = $("#youtube-url").val()
+                let date = $("#date").val()
+                let memo = $("#post-memo").val()
+
+                if (img == "") {
+                    alert("이미지 링크를 까먹으셨어요!");
+                    $("#img-url").focus();
+                    return;
+                } else if (youtube == "") {
+                    alert("유투브 링크를 까먹으셨어요!");
+                    $("#youtube-url").focus();
+                    return;
+                } else if (date == "") {
+                    alert("날짜 기입하시는걸 까먹으셨어요!");
+                    $("#date").focus();
+
+                } else if (memo == "") {
+                    alert("그날의 대해서 설명해주세요~");
+                    $("#memo").focus();
+                    return;
+                }
+
+                console.log(img)
+
 
                 $.ajax({
                     type: "POST",
-                    url: "/memo",
-                    data: {"url_give": urlInfo, "comment_give": commentInfo},
+                    url: "/memory",
+                    data: {
+                        "img_give": img,
+                        "youtube_give": youtube,
+                        "date_give": date,
+                        "memo_give": memo
+                    },
                     success: function (response) { // 성공하면
                         if (response["result"] == "success") {
-                            alert(response["msg"]);
+                            alert(response["memories"]);
                             window.location.reload()
+                        } else {
+                            alert("서버 오류!")
                         }
                     }
                 })
             }
+
+            function showMemory() {
+                $.ajax({
+                    type: "GET",
+                    url: "/memory",
+                    data: {},
+                    success: function (response) {
+                        let memories = response["memories"];
+                        console.log(memories);
+                        for (let i = 0; i < memories.length; i++) {
+                            makeCard(memories[i]["img"], memories[i]["youtube"], memories[i]["date"], memories[i]["memo"]);
+                        }
+                    }
+                })
+            }
+
+            function makeCard(img, youtube, date, memo) {
+                let tempHtml = `<div class="card">
+                        <img class="post-img" src="${img}" alt="Card image cap">
+                        <iframe class="post-youtube"
+                            src="${youtube}"
+                            alt="Post Youtube cap">
+                        </iframe>
+                        <div class="card-body">
+                        <h4><p class="card-text">${date}</p></h4>
+                        <p class="card-text comment">${memo}</p>
+                        </div>
+                    </div>`;
+                $("#cards-box").append(tempHtml);
+            }
+
         </script>
-    </head>
 
     <body class="body-layout" style="background-color:#9BBFC1;">
         <div class="wrap">
@@ -178,44 +238,43 @@
                     <div class="button__horizontal"></div>
                     <div class="button__vertical"></div>
                 </button>
-                <div id="input-box" class="form-input" style="display:none">
-                    <div>
-                        <div class="form-group">
-                            <label class="form-label" for="img-url">Image Link Upload</label>
-                            <input id="img-url" class="form-control" placeholder="그 날의 이미지를 올려주세요">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="youtube-url">Youtube Link Upload</label>
-                            <input id="youtube-url" class="form-control" placeholder="그 날의 노래를 올려주세요">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="date">Date</label>
-                            <input id="date" class="form-control" placeholder="ex) 2020/10/31">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label" for="post-memo">Memo</label>
-                            <textarea id="post-memo" class="form-control" rows="2"></textarea>
-                        </div>
-
-                        <button type="button" class="button" onclick="postMemory()">Add to your Playlist</button>
-
+            </div>
+            <div id="input-box" class="form-input" style="display:none">
+                <div>
+                    <div class="form-group">
+                        <label class="form-label" for="img-url">Image Link Upload</label>
+                        <input id="img-url" class="form-control" placeholder="그 날의 이미지를 올려주세요">
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label class="form-label" for="youtube-url">Youtube Link Upload</label>
+                        <input id="youtube-url" class="form-control" placeholder="그 날의 노래를 올려주세요">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="date">Date</label>
+                        <input id="date" class="form-control" placeholder="ex) 2020/10/31">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="post-memo">Memo</label>
+                        <textarea id="post-memo" class="form-control" rows="2"></textarea>
+                    </div>
 
-                <div id="memory-post" class="card-columns">
-                    <div class="card">
-                        <img class="post-img"
-                             src="https://images.unsplash.com/photo-1592025977521-83fbbd1252c1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1651&q=80"
-                             alt="Post Image cap">
-                        <iframe class="post-youtube"
-                                src="https://www.youtube.com/embed?v=nFV-Jg5mw2E&ab_channel=%EB%A0%88%EB%AA%AC%EC%93%B0"
-                                alt="Post Youtube cap">
-                        </iframe>
-                        <div class="card-body">
-                            <a href="#" class="card-title">여기 기사 제목이 들어가죠</a>
-                            <p class="card-text">벚꽃으로 보러갔다가 거기서 먹었던 핫도그가 생각나서 끄적이는 메모리. </p>
-                            <p class="card-text comment">여기에 코멘트가 들어갑니다.</p>
-                        </div>
+                    <button type="button" class="button" onclick="postMemory()">Add to your Playlist</button>
+
+                </div>
+            </div>
+
+            <div id="memory-post" class="card-columns">
+                <div class="card">
+                    <img class="post-img"
+                         src="https://images.unsplash.com/photo-1592025977521-83fbbd1252c1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1651&q=80"
+                         alt="Post Image cap">
+                    <iframe class="post-youtube"
+                            src="https://www.youtube.com/embed/YBEUXfT7_48"
+                            alt="Post Youtube cap">
+                    </iframe>
+                    <div class="card-body">
+                        <h4><p class="card-text">2020-11-11</p></h4>
+                        <p class="card-text comment">벚꽃으로 보러갔다가 거기서 먹었던 핫도그가 생각나서 끄적이는 메모리. </p>
                     </div>
                 </div>
             </div>

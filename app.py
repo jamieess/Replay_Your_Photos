@@ -13,55 +13,41 @@ db = client.dbsparta  # 'dbsparta'라는 이름의 db를 만들거나 사용합�
 def home():
     return render_template('index2.html')
 
+@app.route('/memory', methods=['POST'])
+def post_memories():
 
-# @app.route('/memo', methods=['POST'])
-# def post_article():
-#
-#     url_receive = request.form['url_give']
-#     comment_receive = request.form['comment_give']
-#
-#     headers = {
-#         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'}
-#     data = requests.get( url_receive, headers=headers )
-#
-#     soup = BeautifulSoup(data.text, 'html.parser')
-#
-#     og_image = soup.select_one('meta[property="og:image"]')
-#     og_title = soup.select_one('meta[property="og:title"]')
-#     og_description = soup.select_one('meta[property="og:description"]')
-#
-#     title = (og_title['content'])
-#     image = (og_image['content'])
-#     description = (og_description['content'])
-#
-#     doc = {
-#         'title' : title,
-#         'url' : url_receive,
-#         'comment' : comment_receive,
-#         'image' : image,
-#         'description' : description
-#     }
-#     db.alonememo.insert_one(doc)
-#
-#     #print(doc)
-#     return jsonify({'result': 'success', 'msg': 'POST 연결되었습니다!'})
-#
-#
-# @app.route('/memo', methods=['GET'])
-# def read_articles():
-#
-#     # DB 5개 가지고오
-#     memoInfo = list(db.alonememo.find({}, {"_id": False}))
-#     #print(memoInfo)
-#     #response["result"] == "sucess")
-#     # #Json 만들어서
-#     returnVal = {"result" : "success", "memolist": memoInfo}
-#
-#
-#     #클라이언트에 주기
-#     return jsonify(returnVal)
-#
-#     return jsonify({'result': 'success', 'msg': 'GET 연결되었습니다!'})
+    img_receive = request.form['img_give']
+    youtube_receive = request.form['youtube_give']
+    date_receive = request.form['date_give']
+    memo_receive = request.form['memo_give']
+
+
+
+    memory = {
+        'img': img_receive,
+        'youtube': youtube_receive,
+        'date': date_receive,
+        'memo': memo_receive
+    }
+    db.memories.insert_one(memory)
+
+    #print(memory)
+    return jsonify({'result': 'success', 'memories': '메모가 성공적으로 작성되었습니다!'})
+
+
+@app.route('/memory', methods=['GET'])
+def read_memories():
+    memories = list(db.memories.find({}, {"_id": False}))
+
+
+    print(memories)
+    returnVal = {"result" : "success", "memories": memories}
+
+
+    #클라이언트에 주기
+    return jsonify(returnVal)
+
+    # return jsonify({'result': 'success', 'msg': 'GET 연결되었습니다!'})
 
 
 if __name__ == '__main__':
