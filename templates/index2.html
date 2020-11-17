@@ -171,18 +171,13 @@
                     return;
                 }
 
-                console.log(img)
+                // console.log(img)
 
 
                 $.ajax({
                     type: "POST",
                     url: "/memory",
-                    data: {
-                        "img_give": img,
-                        "youtube_give": youtube,
-                        "date_give": date,
-                        "memo_give": memo
-                    },
+                    data: {img_give: img, youtube_give: youtube, date_give: date, memo_give: memo},
                     success: function (response) { // 성공하면
                         if (response["result"] == "success") {
                             alert(response["memories"]);
@@ -213,8 +208,7 @@
                 let tempHtml = `<div class="card">
                         <img class="post-img" src="${img}" alt="Card image cap">
                         <iframe class="post-youtube"
-                            src="${youtube}"
-                            alt="Post Youtube cap">
+                            src="${youtube}">
                         </iframe>
                         <div class="card-body">
                         <h4><p class="card-text">${date}</p></h4>
@@ -263,21 +257,21 @@
                 </div>
             </div>
 
-            <div id="memory-post" class="card-columns">
-                <div class="card">
-                    <img class="post-img"
-                         src="https://images.unsplash.com/photo-1592025977521-83fbbd1252c1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1651&q=80"
-                         alt="Post Image cap">
-                    <iframe class="post-youtube"
-                            src="https://www.youtube.com/embed/YBEUXfT7_48"
-                            alt="Post Youtube cap">
-                    </iframe>
-                    <div class="card-body">
-                        <h4><p class="card-text">2020-11-11</p></h4>
-                        <p class="card-text comment">벚꽃으로 보러갔다가 거기서 먹었던 핫도그가 생각나서 끄적이는 메모리. </p>
-                    </div>
-                </div>
-            </div>
+<!--            <div id="memory-post" class="card-columns">-->
+<!--                <div class="card">-->
+<!--                    <img class="post-img"-->
+<!--                         src="https://images.unsplash.com/photo-1592025977521-83fbbd1252c1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1651&q=80"-->
+<!--                         alt="Post Image cap">-->
+<!--                    <iframe class="post-youtube"-->
+<!--                            src="https://www.youtube.com/embed/YBEUXfT7_48"-->
+<!--                            alt="Post Youtube cap">-->
+<!--                    </iframe>-->
+<!--                    <div class="card-body">-->
+<!--                        <h4><p class="card-text">2020-11-11</p></h4>-->
+<!--                        <p class="card-text comment">벚꽃으로 보러갔다가 거기서 먹었던 핫도그가 생각나서 끄적이는 메모리. </p>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
 
 

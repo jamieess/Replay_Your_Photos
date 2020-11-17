@@ -15,17 +15,19 @@ def home():
 
 @app.route('/memory', methods=['POST'])
 def post_memories():
-
     img_receive = request.form['img_give']
     youtube_receive = request.form['youtube_give']
     date_receive = request.form['date_give']
     memo_receive = request.form['memo_give']
 
+    youtube_section = youtube_receive.split("=")
+    youtube_section2 = youtube_section[1].split("&")
 
+    youtube_code = "https://youtu.be/" + str(youtube_section2[0].strip('[]'))
 
     memory = {
         'img': img_receive,
-        'youtube': youtube_receive,
+        'youtube': youtube_code,
         'date': date_receive,
         'memo': memo_receive
     }
@@ -38,16 +40,16 @@ def post_memories():
 @app.route('/memory', methods=['GET'])
 def read_memories():
     memories = list(db.memories.find({}, {"_id": False}))
+    # return jsonify({'result': 'success', 'memories': memories})
 
-
-    print(memories)
+    # print(memories)
     returnVal = {"result" : "success", "memories": memories}
-
-
-    #클라이언트에 주기
+    #
+    #
+    # #클라이언트에 주기
     return jsonify(returnVal)
 
-    # return jsonify({'result': 'success', 'msg': 'GET 연결되었습니다!'})
+    return jsonify({'result': 'success', 'memories': memories})
 
 
 if __name__ == '__main__':
