@@ -82,6 +82,61 @@
                 background: rgba(100, 0, 0, 0.03);
             }
 
+            .button__horizontal, .button__vertical {
+                position: absolute;
+                top: var(--horizontal-offset, 0);
+                right: var(--vertical-offset, 0);
+                bottom: var(--horizontal-offset, 0);
+                left: var(--vertical-offset, 0);
+                -webkit-transition: -webkit-transform .8s ease;
+                transition: -webkit-transform .8s ease;
+                transition: transform .8s ease;
+                transition: transform .8s ease, -webkit-transform .8s ease;
+                will-change: transform;
+            }
+
+            .button__horizontal::before, .button__vertical::before {
+                content: '';
+                position: absolute;
+                border: inherit;
+            }
+
+            .button__horizontal {
+                --vertical-offset: calc(var(--offset) * -1);
+                border-top: var(--border-size) solid currentcolor;
+                border-bottom: var(--border-size) solid currentcolor;
+            }
+
+            .button__horizontal::before {
+                top: calc(var(--vertical-offset) - var(--border-size));
+                bottom: calc(var(--vertical-offset) - var(--border-size));
+                left: calc(var(--vertical-offset) * -1);
+                right: calc(var(--vertical-offset) * -1);
+            }
+
+            .button:hover .button__horizontal {
+                -webkit-transform: scaleX(0);
+                transform: scaleX(0);
+            }
+
+            .button__vertical {
+                --horizontal-offset: calc(var(--offset) * -1);
+                border-left: var(--border-size) solid currentcolor;
+                border-right: var(--border-size) solid currentcolor;
+            }
+
+            .button__vertical::before {
+                top: calc(var(--horizontal-offset) * -1);
+                bottom: calc(var(--horizontal-offset) * -1);
+                left: calc(var(--horizontal-offset) - var(--border-size));
+                right: calc(var(--horizontal-offset) - var(--border-size));
+            }
+
+            .button:hover .button__vertical {
+                -webkit-transform: scaleY(0);
+                transform: scaleY(0);
+            }
+
             #input-box {
                 width: 750px;
                 margin: 40px auto;
@@ -103,22 +158,36 @@
             .post-img {
                 width: 300px;
                 height: 200px;
+                border: #152827 1px solid;
             }
 
             .post-youtube {
                 width: 300px;
                 height: 200px;
+                border: #152827 1px solid;
             }
 
 
             .card-body {
                 width: 300px;
+                min-height: 120px;
                 background-color: whitesmoke;
             }
 
             .card {
+                width: 320px !important;
+                padding: 2%;
+                padding-bottom: 5%;
+                min-height: 550px !important;
+
+            }
+
+            .card-columns {
+                /*padding-left: 80px auto;*/
+                display: inline-block;
                 margin-left: 100px;
-                width: 300px;
+                margin-right: auto;
+                position: relative;
             }
 
         </style>
@@ -190,6 +259,7 @@
             }
 
             function showMemory() {
+                console.log("work");
                 $.ajax({
                     type: "GET",
                     url: "/memory",
@@ -205,6 +275,7 @@
             }
 
             function makeCard(img, youtube, date, memo) {
+                console.log("makecard");
                 let tempHtml = `<div class="card">
                         <img class="post-img" src="${img}" alt="Card image cap">
                         <iframe class="post-youtube"
@@ -215,7 +286,7 @@
                         <p class="card-text comment">${memo}</p>
                         </div>
                     </div>`;
-                $("#cards-box").append(tempHtml);
+                $("#memory-post").append(tempHtml);
             }
 
         </script>
@@ -257,21 +328,21 @@
                 </div>
             </div>
 
-<!--            <div id="memory-post" class="card-columns">-->
-<!--                <div class="card">-->
-<!--                    <img class="post-img"-->
-<!--                         src="https://images.unsplash.com/photo-1592025977521-83fbbd1252c1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1651&q=80"-->
-<!--                         alt="Post Image cap">-->
-<!--                    <iframe class="post-youtube"-->
-<!--                            src="https://www.youtube.com/embed/YBEUXfT7_48"-->
-<!--                            alt="Post Youtube cap">-->
-<!--                    </iframe>-->
-<!--                    <div class="card-body">-->
-<!--                        <h4><p class="card-text">2020-11-11</p></h4>-->
-<!--                        <p class="card-text comment">벚꽃으로 보러갔다가 거기서 먹었던 핫도그가 생각나서 끄적이는 메모리. </p>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
+            <div id="memory-post" class="card-columns">
+                <div class="card">
+                    <img class="post-img"
+                         src="https://images.unsplash.com/photo-1592025977521-83fbbd1252c1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1651&q=80"
+                         alt="Post Image cap">
+                    <iframe class="post-youtube"
+                            src="https://www.youtube.com/embed/YBEUXfT7_48"
+                            alt="Post Youtube cap">
+                    </iframe>
+                    <div class="card-body">
+                        <h4><p class="card-text">2020/11/11</p></h4>
+                        <p class="card-text comment">벚꽃으로 보러갔다가 거기서 먹었던 핫도그가 생각. </p>
+                    </div>
+                </div>
+            </div>
         </div>
 
 

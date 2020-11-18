@@ -23,7 +23,7 @@ def post_memories():
     youtube_section = youtube_receive.split("=")
     youtube_section2 = youtube_section[1].split("&")
 
-    youtube_code = "https://youtu.be/" + str(youtube_section2[0].strip('[]'))
+    youtube_code = "https://www.youtube.com/embed/" + str(youtube_section2[0].strip('[]'))
 
     memory = {
         'img': img_receive,
